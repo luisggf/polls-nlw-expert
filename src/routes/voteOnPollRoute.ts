@@ -2,6 +2,8 @@ import { FastifyInstance } from "fastify";
 import {z} from "zod"
 import { randomUUID } from "crypto";
 import { prisma } from "../lib/prisma";
+import { redis } from  "../lib/redis";
+import { voting } from "../utils/voting-pub-sub"
 
 export async function voteOnPollRoute (app: FastifyInstance) {
     // we must use async parameter whenever there`s an await promise inside the function
@@ -46,6 +48,14 @@ export async function voteOnPollRoute (app: FastifyInstance) {
                     id: userPreviousVote.id
                 }
             })
+
+            const votes = await redis.zincrby(pollId, -1, userPreviousVote.pollOptionId)
+
+            voting.publish(pollId, {
+                pollOptionId: userPreviousVote.pollOptionId,
+                votes: Number(votes),
+            })
+
         } else if (userPreviousVote){
             return reply.status(400).send({message: "User already voted at this poll!"})
         }
@@ -58,6 +68,13 @@ export async function voteOnPollRoute (app: FastifyInstance) {
             }
         })
         
+        const votes = await redis.zincrby(pollId, 1, pollOptionId)
+
+        voting.publish(pollId, {
+            pollOptionId,
+            votes: Number(votes),
+        })
+
         return reply.send({sessionId}) 
     })
 }
