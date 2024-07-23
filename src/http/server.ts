@@ -2,9 +2,9 @@ import fastify from "fastify";
 import { createPoll } from "../routes/pollsRoute";
 import { getPoll } from "../routes/getPollsRoute";
 import { voteOnPollRoute } from "../routes/voteOnPollRoute";
+import { pollResults } from "./ws/poll-results"; // Import the pollResults route
 import cookie from "@fastify/cookie";
-import { fastifyWebsocket } from "@fastify/websocket";
-import { pollResults } from "./ws/poll-results";
+import fastifyWebsocket from "@fastify/websocket";
 import cors from "@fastify/cors";
 import { getAllPolls } from "../routes/getAllPolls";
 
@@ -20,12 +20,13 @@ app.register(cookie, {
   parseOptions: {},
 });
 
+app.register(fastifyWebsocket);
+
 app.register(createPoll);
 app.register(getPoll);
 app.register(voteOnPollRoute);
-app.register(fastifyWebsocket);
-app.register(pollResults);
 app.register(getAllPolls);
+app.register(pollResults); // Register the pollResults route
 
 app.listen({ port: 3333 }).then(() => {
   console.log("HTTP Running");
