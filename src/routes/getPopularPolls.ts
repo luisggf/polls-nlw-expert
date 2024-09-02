@@ -37,7 +37,6 @@ export async function getPopularPolls(app: FastifyInstance) {
 
           return {
             id: poll.id,
-            title: poll.title,
             options: poll.options.map((option) => ({
               id: option.id,
               title: option.title,

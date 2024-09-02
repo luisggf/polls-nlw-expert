@@ -12,13 +12,14 @@ import { getPopularPolls } from "../routes/getPopularPolls";
 const app = fastify();
 
 app.register(cors, {
-  origin: "*",
+  origin: "http://localhost:5173", // Replace with your frontend origin
+  credentials: true, // Allow cookies and other credentials
 });
 
 app.register(cookie, {
   secret: "polls-app-nlw-secret-string",
   hook: "onRequest",
-  parseOptions: {},
+  parseOptions: { domain: undefined },
 });
 
 app.register(fastifyWebsocket);

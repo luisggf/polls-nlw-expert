@@ -9,15 +9,23 @@ export async function voteOnPollRoute(app: FastifyInstance) {
   app.post("/polls/:pollId/votes", async (request, reply) => {
     const VoteOnPollBody = z.object({
       pollOptionId: z.string().uuid(),
+      username: z.string().min(1).optional(), // Include username validation
     });
 
     const VoteOnPollParams = z.object({
       pollId: z.string().cuid(),
     });
+
     const { pollId } = VoteOnPollParams.parse(request.params);
-    const { pollOptionId } = VoteOnPollBody.parse(request.body);
+    const { pollOptionId, username } = VoteOnPollBody.parse(request.body); // Parse username from body
 
     let { sessionId } = request.cookies;
+
+    console.log(request.cookies);
+
+    const finalUsername = username || request.cookies.username || "Anonymous"; // Determine final username
+
+    console.log(finalUsername);
 
     if (!sessionId) {
       sessionId = randomUUID();
@@ -40,7 +48,7 @@ export async function voteOnPollRoute(app: FastifyInstance) {
     });
 
     if (userPreviousVote && userPreviousVote.pollOptionId !== pollOptionId) {
-      // delete the previous vote and rewrite the new vote
+      // Delete the previous vote and rewrite the new vote
       await prisma.vote.delete({
         where: {
           id: userPreviousVote.id,
@@ -56,6 +64,7 @@ export async function voteOnPollRoute(app: FastifyInstance) {
       voting.publish(pollId, {
         pollOptionId: userPreviousVote.pollOptionId,
         votes: Number(votes),
+        username: finalUsername, // Broadcast the final username
       });
     } else if (userPreviousVote) {
       return reply
@@ -76,6 +85,7 @@ export async function voteOnPollRoute(app: FastifyInstance) {
     voting.publish(pollId, {
       pollOptionId,
       votes: Number(votes),
+      username: finalUsername, // Broadcast the final username
     });
 
     // Broadcast the update via WebSocket
@@ -86,7 +96,12 @@ export async function voteOnPollRoute(app: FastifyInstance) {
       if (client.readyState === 1) {
         // 1 means the connection is open
         client.send(
-          JSON.stringify({ pollId, pollOptionId, votes: Number(votes) })
+          JSON.stringify({
+            pollId,
+            pollOptionId,
+            votes: Number(votes),
+            username: finalUsername, // Include the final username in WebSocket message
+          })
         );
       }
     });
