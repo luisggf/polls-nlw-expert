@@ -19,11 +19,11 @@ model Poll {
 }
 
 model PollOption {
-  id     String @id @default(uuid())
-  title  String
-  poll   Poll   @relation(fields: [pollId], references: [id])
-  pollId String
-  votes  Vote[]
+  id         String @id @default(uuid())
+  poll_title String
+  poll       Poll   @relation(fields: [pollId], references: [id])
+  pollId     String
+  votes      Vote[]
 }
 
 model Vote {

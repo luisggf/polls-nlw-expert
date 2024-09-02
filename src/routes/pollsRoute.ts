@@ -11,17 +11,23 @@ export async function createPoll(app: FastifyInstance) {
     });
     const { options } = createPollBody.parse(request.body);
 
+    console.log(options);
+    options.map((obj) => {
+      console.log(obj);
+    });
     const poll = await prisma.poll.create({
       data: {
         options: {
           createMany: {
             data: options.map((obj) => {
-              return { title: obj };
+              return { poll_title: obj };
             }),
           },
         },
       },
     });
+
+    console.log(poll);
 
     return reply.status(201).send({ poll_id: poll.id });
   });

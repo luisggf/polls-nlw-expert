@@ -11,7 +11,7 @@ export async function getPopularPolls(app: FastifyInstance) {
           options: {
             select: {
               id: true,
-              title: true,
+              poll_title: true,
             },
           },
         },
@@ -39,7 +39,7 @@ export async function getPopularPolls(app: FastifyInstance) {
             id: poll.id,
             options: poll.options.map((option) => ({
               id: option.id,
-              title: option.title,
+              title: option.poll_title,
               score: votes[option.id] || 0,
             })),
             totalVotes, // Store total votes for sorting
