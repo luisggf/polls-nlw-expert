@@ -64,11 +64,30 @@ To apply schema changes and run migrations:
 npx prisma migrate dev
 ```
 
+## Setting the Project up
+
+### 1. Clone the repository and install the dependencies via package.json
+
+Clone this repository to your local machine:
+
+```bash
+git clone https://github.com/luisggf/polls-nlw-expert
+cd <repository-directory>
+```
+
+### 2. Install Project Dependencies
+
+The package.json file is already configured with all the necessary dependencies. To install them, simply run:
+
+```bash
+npm install
+```
+
 ## To Run This Project
 
 ### 1. Set Up Environment Variables
 
-Create a `.env` file in the root directory with the following contents:
+Create a `.env` file in the root directory with the following contents (i kept my local .env and .yml configs in this repository but you can change it to your own). Example:
 
 ```env
 DATABASE_URL="postgresql://user:password@localhost:5432/polls?schema=public"
