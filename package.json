@@ -4,7 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx watch src/http/server.ts"
+    "dev": "tsx watch src/http/server.ts",
+    "build": "next build",
+    "start": "next start",
+    "prisma": "prisma",
+    "migrate": "prisma migrate dev",
+    "seed": "ts-node --transpile-only prisma/seed.ts",
+    "migrate:seed": "npm run migrate && npm run seed"
   },
   "keywords": [],
   "author": "",
