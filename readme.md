@@ -75,38 +75,6 @@ DATABASE_URL="postgresql://user:password@localhost:5432/polls?schema=public"
 REDIS_URL="redis://localhost:6379"
 ```
 
-### 2. Run Docker to Create Database Containers
-
-Use Docker to start PostgreSQL and Redis containers:
-
-```bash
-docker-compose up -d
-```
-
-### 3. Apply Database Migrations
-
-After setting up the Docker containers, apply the latest database migrations:
-
-```bash
-npx prisma migrate dev
-```
-
-### 4. Seed the Database
-
-This project has a seed script to populate the database with initial data, run:
-
-```bash
-npm run migrate:seed
-```
-
-### 5. Start the Development Server
-
-To start the server the following inline command can be used:
-
-```bash
-npm run dev
-```
-
 ## Docker Configuration
 
 The `docker-compose.yml` file defines the services for PostgreSQL and Redis:
@@ -144,3 +112,35 @@ volumes:
 
 - Ensure that the `POSTGRES_USER` and `POSTGRES_PASSWORD` in the `docker-compose.yml` file match the credentials specified in the `.env` file.
 - Use the `DATABASE_URL` in the `.env` file to connect to the PostgreSQL database.
+
+### 2. Run Docker to Create Database Containers
+
+Use Docker to start PostgreSQL and Redis containers:
+
+```bash
+docker-compose up -d
+```
+
+### 3. Apply Database Migrations
+
+After setting up the Docker containers, apply the latest database migrations:
+
+```bash
+npx prisma migrate dev
+```
+
+### 4. Seed the Database
+
+This project has a seed script to populate the database with initial data, run:
+
+```bash
+npm run migrate:seed
+```
+
+### 5. Start the Development Server
+
+To start the server the following inline command can be used:
+
+```bash
+npm run dev
+```
