@@ -16,7 +16,17 @@ model Poll {
   updatedAt DateTime     @default(now())
   options   PollOption[]
   votes     Vote[]
+  // User      User[]
 }
+
+// verify if user is really necessary given we already have cookies
+// model User {
+//   user_id    String   @id @default(cuid())
+//   nickname   String
+//   createdAt  DateTime @default(now())
+//   user_polls String
+//   polls      Poll     @relation(fields: [user_polls], references: [id])
+// }
 
 model PollOption {
   id         String @id @default(uuid())

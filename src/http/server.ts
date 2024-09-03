@@ -8,6 +8,7 @@ import fastifyWebsocket from "@fastify/websocket";
 import cors from "@fastify/cors";
 import { getAllPolls } from "../routes/getAllPolls";
 import { getPopularPolls } from "../routes/getPopularPolls";
+import { getPolls } from "../routes/getPollsInfiniteScroll";
 
 const app = fastify();
 
@@ -30,6 +31,7 @@ app.register(voteOnPollRoute);
 app.register(getAllPolls);
 app.register(pollResults); // Register the pollResults route
 app.register(getPopularPolls);
+app.register(getPolls);
 
 app.listen({ port: 3333 }).then(() => {
   console.log("HTTP Running");
