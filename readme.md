@@ -91,7 +91,6 @@ Create a `.env` file in the root directory with the following contents (i kept m
 
 ```env
 DATABASE_URL="postgresql://user:password@localhost:5432/polls?schema=public"
-REDIS_URL="redis://localhost:6379"
 ```
 
 ## Docker Configuration
@@ -137,7 +136,7 @@ volumes:
 Use Docker to start PostgreSQL and Redis containers:
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 ### 3. Apply Database Migrations
@@ -148,12 +147,20 @@ After setting up the Docker containers, apply the latest database migrations:
 npx prisma migrate dev
 ```
 
+In case this command doesn't work make sure to check if there's any PostGres instance running locally in the background. This programs interfere directly with the Prisma migration for the Docker VM.
+
 ### 4. Seed the Database
 
 This project has a seed script to populate the database with initial data, run:
 
 ```bash
-npm run migrate:seed
+npm run seed
+```
+
+In case this command doesn't work make sure to check if the ts-node dependency is installed. In case you run into problems related to the ts-node, please run:
+
+```bash
+npm install -g ts-node
 ```
 
 ### 5. Start the Development Server
@@ -163,3 +170,17 @@ To start the server the following inline command can be used:
 ```bash
 npm run dev
 ```
+
+### 5. End
+
+Now you're good to go, the server is sucessfully running and the Backend is ready to accept/communicate with client side application :)
+The Frontend application can be found here: https://github.com/luisggf/polls-front
+
+OBS: To rerun this server other times you need to run, in sequence, this commands:
+
+```bash
+docker compose up
+npm run dev
+```
+
+- Note that the Docker Desktop program must be running.

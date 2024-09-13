@@ -11,6 +11,18 @@ async function main() {
   }
 
   // Create some initial polls with options
+  const poll0 = await prisma.poll.create({
+    data: {
+      options: {
+        createMany: {
+          data: [
+            { poll_title: "Dar os 40 pontos do trabalho de BD2" },
+            { poll_title: "Passar todos do grupo diretamente" },
+          ],
+        },
+      },
+    },
+  });
   const poll1 = await prisma.poll.create({
     data: {
       options: {
@@ -157,7 +169,7 @@ async function main() {
   });
 
   console.log(
-    `Created polls: ${poll1.id}, ${poll2.id}, ${poll3.id}, ${poll4.id}, ${poll5.id}, ${poll6.id}, ${poll7.id}, ${poll8.id}, ${poll9.id}, ${poll10.id}`
+    `Created polls: ${poll0.id},${poll1.id}, ${poll2.id}, ${poll3.id}, ${poll4.id}, ${poll5.id}, ${poll6.id}, ${poll7.id}, ${poll8.id}, ${poll9.id}, ${poll10.id}`
   );
 }
 main()
